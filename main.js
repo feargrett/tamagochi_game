@@ -65,30 +65,41 @@ function animateIdle() {
   tamagotchi.y += Math.sin(Date.now() * 0.002) * 0.5;
 }
 
+const TAMAGOTCHI_ACTIONS = {
+    FEED: "FEED",
+    PLAY: "PLAY",
+    CLEAN: "CLEAN",
+    SLEEP: "SLEEP"
+};
 // Función para actualizar las estadísticas del Tamagotchi.
 function updateStats(action) {
     switch (action) {
-        case "feed":
+        case TAMAGOTCHI_ACTIONS.FEED:
             tamagotchi.hunger += 10;
+            if (tamagotchi.hunger > 100) tamagotchi.hunger = 100;
             break;
-        case "play":
+        case TAMAGOTCHI_ACTIONS.PLAY:
             tamagotchi.happiness += 10;
             tamagotchi.energy -= 10;
+            if (tamagotchi.energy < 0) tamagotchi.energy = 0;
+            if (tamagotchi.happiness > 100) tamagotchi.happiness = 100;
             break;
-        case "clean":
+        case TAMAGOTCHI_ACTIONS.CLEAN:
             tamagotchi.cleanliness += 10;
+            if (tamagotchi.cleanliness > 100) tamagotchi.cleanliness = 100;
             break;
-        case "sleep":
+        case TAMAGOTCHI_ACTIONS.SLEEP:
             tamagotchi.energy += 10;
+            if (tamagotchi.energy > 100) tamagotchi.energy = 100;
             break;
     }
 }
 
 // Event listeners para los botones.
-document.getElementById("feed").addEventListener("click", () => updateStats("feed"));
-document.getElementById("play").addEventListener("click", () => updateStats("play"));
-document.getElementById("clean").addEventListener("click", () => updateStats("clean"));
-document.getElementById("sleep").addEventListener("click", () => updateStats("sleep"));
+document.getElementById("feed").addEventListener("click", () => updateStats(TAMAGOTCHI_ACTIONS.FEED));
+document.getElementById("play").addEventListener("click", () => updateStats(TAMAGOTCHI_ACTIONS.PLAY));
+document.getElementById("clean").addEventListener("click", () => updateStats(TAMAGOTCHI_ACTIONS.CLEAN));
+document.getElementById("sleep").addEventListener("click", () => updateStats(TAMAGOTCHI_ACTIONS.SLEEP));
 
 // Loop principal del juego.
 function gameLoop() {
@@ -105,4 +116,21 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
-gameLoop();
+(() => {
+
+  // Inicia el loop de la actualización de las estadísticas.
+  setInterval(() => {
+    tamagotchi.hunger -= Math.floor(Math.random() * 15) + 1;
+    tamagotchi.happiness -= Math.floor(Math.random() * 10) + 1;
+    tamagotchi.energy -= Math.floor(Math.random() * 5) + 1;
+    tamagotchi.cleanliness -= Math.floor(Math.random() * 5) + 1;
+    if (tamagotchi.hunger < 0) tamagotchi.hunger = 0;
+    if (tamagotchi.happiness < 0) tamagotchi.happiness = 0;
+    if (tamagotchi.energy < 0) tamagotchi.energy = 0;
+    if (tamagotchi.cleanliness < 0) tamagotchi.cleanliness = 0;
+  }, 1000 * 10);
+
+  // Inicia el loop del juego.
+  gameLoop();
+
+})();
