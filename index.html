@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Document</title>
+</head>
+<body>
+  <canvas id="tamagotchi" width="300" height="300"></canvas>
+  <div class="states">
+    <div>
+      <label>Hambre</label>
+      <progress id="hunger" max="100"></progress>
+    </div>
+    <div>
+      <label>Felicidad</label>
+      <progress id="happiness" max="100"></progress>
+    </div>
+    <div>
+      <label>Energía</label>
+      <progress id="energy" max="100"></progress>
+    </div>
+    <div>
+      <label>Limpieza</label>
+      <progress id="cleanliness" max="100"></progress>
+    </div>
+  </div>
+  <div class="actions">
+    <button id="feed">Alimentar</button>
+    <button id="play">Jugar</button>
+    <button id="clean">Limpiar</button>
+    <button id="sleep">Dormir</button>
+  </div>
+  <script type="module" src="main.js"></script>
+</body>
+</html>
