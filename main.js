@@ -19,6 +19,8 @@ function drawTamagotchi() {
   ctx.fillRect(tamagotchi.x - tamagotchi.size / 2, tamagotchi.y - tamagotchi.size / 2, tamagotchi.size, tamagotchi.size);
 
   drawEyes();
+
+  updateMouthState();
   drawMouth();
 }
 
@@ -40,14 +42,49 @@ function drawEyes() {
   }
 }
 
-// Dibuja la boca (una simple línea).
+// Enumeración para los estados de la boca.
+const MOUTH_STATES = {
+    SMILE: "SMILE",
+    NEUTRAL: "NEUTRAL",
+    SAD: "SAD",
+};
+
+// Variable para el estado actual de la boca.
+let currentMouthState = MOUTH_STATES.NEUTRAL;
+
+// Dibuja la boca.
 function drawMouth() {
   ctx.strokeStyle = "white";
   ctx.lineWidth = 3;
-  ctx.beginPath();
-  ctx.moveTo(tamagotchi.x - 5, tamagotchi.y + 6);
-  ctx.lineTo(tamagotchi.x + 5, tamagotchi.y + 6);
-  ctx.stroke();
+
+  if (currentMouthState === MOUTH_STATES.NEUTRAL) {
+    ctx.beginPath();
+    ctx.moveTo(tamagotchi.x - 7, tamagotchi.y + 6);
+    ctx.lineTo(tamagotchi.x + 7, tamagotchi.y + 6);
+    ctx.stroke();
+  }
+
+  if (currentMouthState === MOUTH_STATES.SMILE) {
+    ctx.beginPath();
+    ctx.moveTo(tamagotchi.x - 7, tamagotchi.y + 6);
+    ctx.lineTo(tamagotchi.x, tamagotchi.y + 7);
+    ctx.lineTo(tamagotchi.x + 7, tamagotchi.y + 6);
+    ctx.stroke();
+  }
+
+  if (currentMouthState === MOUTH_STATES.SAD) {
+    ctx.beginPath();
+    ctx.moveTo(tamagotchi.x - 7, tamagotchi.y + 6);
+    ctx.lineTo(tamagotchi.x, tamagotchi.y + 5);
+    ctx.lineTo(tamagotchi.x + 7, tamagotchi.y + 6);
+    ctx.stroke();
+  }
+}
+
+function updateMouthState() {
+  if (tamagotchi.happiness < 20) return currentMouthState = MOUTH_STATES.SAD;
+  if (tamagotchi.happiness > 80) return currentMouthState = MOUTH_STATES.SMILE;
+  return currentMouthState = MOUTH_STATES.NEUTRAL;
 }
 
 let checkedExecuteIsEyeClosed = false; 
